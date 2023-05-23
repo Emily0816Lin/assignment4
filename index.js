@@ -6,7 +6,7 @@ let isGameStarted = false;
 let matches = 0;
 let clicks = 0;
 
-const setup = async () => {
+const setup = () => {
 
   newFetch();
   handlepokeCardClick(50);
@@ -256,10 +256,7 @@ async function newFetch() {
   console.log("pokemon.length", pokemon.length);
 
   let randomIndices = [];
-  // for (let i = 0; i < $(".pokecard").length / 2; i++) {
-  //   const randomNumber = Math.floor(Math.random() * pokemon.length) + 1;
-  //   randomIndices.push(randomNumber);
-  // }
+  
   while (randomIndices.length < $(".pokecard").length / 2) {
     const randomNumber = Math.floor(Math.random() * pokemon.length) + 1;
     if (!randomIndices.includes(randomNumber)) {
