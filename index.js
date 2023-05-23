@@ -98,14 +98,14 @@ const startGame = (timer) => {
       $("#s").text(timeLeft === 1 ? "" : "s");
 
       if (timeLeft === 0) {
-        clearInterval(timerInterval);
+        // clearInterval(timerInterval);
         setTimeout(() => {
           alert("Time's up! Try again!");
           window.location.reload();
         }, 500);
       }
 
-      if (timeLeft % 10 === 0) {
+      if (timeLeft % 25 === 0) {
         alert("Power Up!");
         $(".pokecard").addClass("flip");
 
@@ -255,10 +255,17 @@ async function newFetch() {
   console.log("pokemon.length", pokemon.length);
 
   let randomIndices = [];
-  for (let i = 0; i < $(".pokecard").length / 2; i++) {
+  // for (let i = 0; i < $(".pokecard").length / 2; i++) {
+  //   const randomNumber = Math.floor(Math.random() * pokemon.length) + 1;
+  //   randomIndices.push(randomNumber);
+  // }
+  while (randomIndices.length < $(".pokecard").length / 2) {
     const randomNumber = Math.floor(Math.random() * pokemon.length) + 1;
-    randomIndices.push(randomNumber);
+    if (!randomIndices.includes(randomNumber)) {
+      randomIndices.push(randomNumber);
+    }
   }
+
   randomIndices = randomIndices.concat(randomIndices);
 
   for (let i = randomIndices.length - 1; i > 0; i--) {
