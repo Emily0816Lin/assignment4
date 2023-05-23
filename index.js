@@ -9,7 +9,7 @@ let clicks = 0;
 const setup = async () => {
 
   //Easy difficulty
-  newFetch(3);
+  newFetch();
   handleCardClick(50);
 
   //Medium difficulty
@@ -21,7 +21,7 @@ const setup = async () => {
       document.getElementById("game_grid").style.width = "800px";
       document.getElementById("game_grid").style.height = "600px";
       addCard(12);
-      newFetch(6);
+      newFetch();
       handleCardClick(100);
     }
   })
@@ -35,7 +35,7 @@ const setup = async () => {
       document.getElementById("game_grid").style.width = "1200px";
       document.getElementById("game_grid").style.height = "800px";
       addCard(24);
-      newFetch(12);
+      newFetch();
       handleCardClick(150);
     }
   })
@@ -47,7 +47,7 @@ const setup = async () => {
   document.getElementById("light").addEventListener("click", function () {
     document.getElementById("game_grid").style.backgroundColor = "white";
   });
-  
+
 }
 
 
@@ -81,7 +81,7 @@ function addCard(cardLimit) {
 
 
 // get random pokemon images
-async function newFetch(numOfPics) {
+async function newFetch() {
   console.log("cards.length", $(".card").length);
 
   let response = await axios.get('https://pokeapi.co/api/v2/pokemon?offset=0&limit=810');
@@ -89,16 +89,21 @@ async function newFetch(numOfPics) {
   console.log("pokemon.length", pokemon.length);
 
   let randomIndices = [];
-  while (randomIndices.length < $(".card").length / 2) {
-    let randomIndex = Math.floor(Math.random() * pokemon.length);
-    if (!randomIndices.includes(randomIndex)) {
-      randomIndices.push(randomIndex);
-    }
+  for (let i = 0; i < $(".card").length / 2; i++) {
+    const randomNumber = Math.floor(Math.random() * pokemon.length) + 1;
+    randomIndices.push(randomNumber);
   }
+  randomIndices = randomIndices.concat(randomIndices);
+
+  for (let i = randomIndices.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [randomIndices[i], randomIndices[j]] = [randomIndices[j], randomIndices[i]];
+  }
+
   console.log("randomIndices", randomIndices);
 
-  for (let i = 1; i <= $(".card").length; i++) {
-    let randomIndex = randomIndices[Math.floor((i - 1) / 2) % numOfPics];
+  for (let i = 1; i <= randomIndices.length; i++) {
+    let randomIndex = randomIndices[i - 1];
     console.log("randomIndex", randomIndex);
 
     let res = await axios.get(`${pokemon[randomIndex].url}`);
@@ -107,14 +112,14 @@ async function newFetch(numOfPics) {
 
     let imgTag = `<img id="img${i}" class="front_face" src="${res.data.sprites.other['official-artwork'].front_default}" alt="${res.data.name}">`;
     document.getElementById(`img${i}`).outerHTML = imgTag;
-
-    // Shuffle the cards
-    const cards = $(".card").toArray();
-    cards.forEach(card => {
-      const randomPosition = Math.floor(Math.random() * cards.length);
-      $(card).before(cards[randomPosition]);
-    });
   }
+
+  // // Shuffle the cards
+  // const cards = $(".card").toArray();
+  // cards.forEach(card => {
+  //   const randomPosition = Math.floor(Math.random() * cards.length);
+  //   $(card).before(cards[randomPosition]);
+  // });
 }
 
 
