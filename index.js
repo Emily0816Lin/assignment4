@@ -105,6 +105,7 @@ const startGame = (timer) => {
         }, 500);
       }
 
+      //Power Up
       if (timeLeft % 25 === 0) {
         alert("Power Up!");
         $(".pokecard").addClass("flip");
