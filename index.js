@@ -288,7 +288,3 @@ async function newFetch() {
 
 
 $(document).ready(setup);
-
-
-
-
